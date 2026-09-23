@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+
+const API = import.meta.env.VITE_API_URL
+
 const STATUSES = ['À postuler', 'Postulé', 'Entretien', 'Refusé']
 
 const STATUS_COLORS = {
@@ -14,14 +17,14 @@ function JobList() {
   const [jobs, setJobs] = useState([])
 
   const fetchJobs = async () => {
-    const res = await fetch('http://localhost:8000/jobs')
+    const res = await fetch(`${API}/jobs`)
     setJobs(await res.json())
   }
 
   useEffect(() => { fetchJobs() }, [])
 
   const updateStatus = async (id, status) => {
-    await fetch(`http://localhost:8000/jobs/${id}/status`, {
+    await fetch(`${API}/jobs/${id}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
@@ -87,7 +90,7 @@ function App() {
     setAnalysis(null)
     setSaved(false)
     setLetter('')
-    const res = await fetch('http://localhost:8000/analyze', {
+    const res = await fetch(`${API}/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ description })
@@ -97,7 +100,7 @@ function App() {
   }
 
   const save = async () => {
-    await fetch('http://localhost:8000/jobs', {
+    await fetch(`${API}/jobs`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, company, description, skills: analysis.skills, summary: analysis.summary, status: 'À postuler' })
@@ -108,7 +111,7 @@ function App() {
   const generateLetter = async () => {
     setLoadingLetter(true)
     setLetter('')
-    const res = await fetch('http://localhost:8000/coverletter', {
+    const res = await fetch(`${API}/coverletter`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ job_title: title, company, skills: analysis.skills, summary: analysis.summary, candidate_background: background })

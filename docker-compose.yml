@@ -10,3 +10,8 @@ services:
       - "8000:8000"
     environment:
       - OLLAMA_URL=http://host.docker.internal:11434
+    volumes:
+      - db_data:/app/db
+
+volumes:
+  db_data:
