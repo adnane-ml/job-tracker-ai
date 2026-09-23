@@ -26,13 +26,15 @@ Job hunting means processing dozens of offers manually. This project automates j
 
 ## Architecture
 
+```
 Client (React)
-↓ HTTP
+     ↓ HTTP
 FastAPI :8000
-↓ HTTP
+     ↓ HTTP
 Ollama :11434 (Mistral 7B — local inference)
-↓
+     ↓
 SQLite (persistent Docker volume)
+```
 
 
 ---
@@ -76,22 +78,24 @@ docker-compose up --build
 
 ## Project Structure
 
+```
 job-tracker-ai/
-├── frontend/ ← React + Vite
-│ ├── src/
-│ │ ├── App.jsx
-│ │ └── App.css
-│ └── .env.example
-├── backend/ ← FastAPI
-│ ├── app/
-│ │ ├── main.py
-│ │ ├── database.py
-│ │ └── api/
-│ │ ├── analyze.py ← AI extraction
-│ │ ├── jobs.py ← CRUD operations
-│ │ └── coverletter.py ← letter generation
-│ └── requirements.txt
+├── frontend/               ← React + Vite
+│   ├── src/
+│   │   ├── App.jsx
+│   │   └── App.css
+│   └── .env.example
+├── backend/                ← FastAPI
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── database.py
+│   │   └── api/
+│   │       ├── analyze.py      ← AI extraction
+│   │       ├── jobs.py         ← CRUD operations
+│   │       └── coverletter.py  ← letter generation
+│   └── requirements.txt
 └── docker-compose.yml
+```
 
 
 ---
