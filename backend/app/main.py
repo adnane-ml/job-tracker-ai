@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.analyze import router as analyze_router
 from app.api.jobs import router as jobs_router
+from app.api.coverletter import router as coverletter_router
 
 app = FastAPI()
 
@@ -14,6 +15,7 @@ app.add_middleware(
 
 app.include_router(analyze_router)
 app.include_router(jobs_router)
+app.include_router(coverletter_router)
 
 @app.get("/health")
 def health():
