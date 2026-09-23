@@ -84,20 +84,27 @@ function App() {
   const [letter, setLetter] = useState('')
   const [loadingLetter, setLoadingLetter] = useState(false)
   const [background, setBackground] = useState('')
+  const [error, setError] = useState(null)
 
   const analyze = async () => {
-    setLoading(true)
-    setAnalysis(null)
-    setSaved(false)
-    setLetter('')
+  setLoading(true)
+  setAnalysis(null)
+  setSaved(false)
+  setLetter('')
+  setError(null)
+  try {
     const res = await fetch(`${API}/analyze`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ description })
     })
+    if (!res.ok) throw new Error('Erreur serveur')
     setAnalysis(await res.json())
-    setLoading(false)
+  } catch (e) {
+    setError('Impossible de contacter le serveur. Vérifie que le backend tourne.')
   }
+  setLoading(false)
+}
 
   const save = async () => {
     await fetch(`${API}/jobs`, {
@@ -160,6 +167,12 @@ function App() {
             <button className="btn btn-primary" onClick={analyze} disabled={loading}>
               {loading ? 'Analyse en cours...' : 'Analyser'}
             </button>
+
+              {error && (
+              <div style={{ marginTop: 12, padding: '10px 14px', background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8, fontSize: 14, color: '#DC2626' }}>
+                  {error}
+              </div>
+              )}
 
             {analysis && (
               <div className="results">
